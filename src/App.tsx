@@ -7,12 +7,13 @@ import "./App.css";
 function App() {
   const [trips, setTrips] = useState(0);
   const [nav, setNav] = useState<string[]>([]);
-  const [boughtIt, setBoughtIt] = useState(false);
-  const { data, isLoading, error } = useFetch();
-  const { heroics, waitAMo, fail } = useHero();
+  const [boughtIt, setBoughtIt] = useState(false); //Does this get used?
+  const { data, isLoading } = useFetch();
+  const { heroics, waiting } = useHero();
 
   useEffect(() => {
     setNav(() => {
+      //Make this a nav component, why is it a pile of state?
       return ["trending", "your orders", "community"];
     });
     if (heroics) if (data) setTrips(data.length);
@@ -43,6 +44,7 @@ function App() {
     return scoreRepresentationUsingACuteLilPlanetEmoji;
   };
 
+  //Make header/nav, heroics, trips their own components
   return (
     <>
       <header className="site-header">
@@ -67,7 +69,7 @@ function App() {
         </ul>
       </header>
 
-      {waitAMo && <p>...getting heroics...</p>}
+      {waiting && <p>...getting heroics...</p>}
       {heroics && (
         <div
           className="hero-section"
@@ -79,8 +81,9 @@ function App() {
         >
           <h3>We've been helping humanity traverse the universe for aeons.</h3>
           <p>
-            Now it's your turn to marvel at the wonders of the universe! But don't just take our word for it; check out
-            these smashing reviews from customers just like you!
+            Now it's your turn to marvel at the wonders of the universe! But
+            don't just take our word for it; check out these smashing reviews
+            from customers just like you!
           </p>
           <ul className="testimonials">
             {heroics.testimonials.map(({ name, rating, spiel, social }) => {
